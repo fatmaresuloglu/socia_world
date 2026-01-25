@@ -1,16 +1,18 @@
-# socia_world
+SociaWorld 📱
+SociaWorld is a modern social media UI project developed with Flutter. It features a sleek design for tracking stories and exploring posts, providing a high-quality user experience with a focus on clean UI components.
 
-A new Flutter project.
+🚀 Features
+Dynamic Story Bar: Instagram-style story components with gradient borders and online status indicators.
 
-## Getting Started
+Modern AppBar: A clean interface with notification icons and custom menu integration.
 
-This project is a starting point for a Flutter application.
+Responsive Design: Fully compatible with Flutter Web (Chrome) and Mobile platforms.
 
-A few resources to get you started if this is your first Flutter project:
+Modular Codebase: Reusable widgets and functions for scalable development.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+🛠️ Tech Stack
+Framework: Flutter
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Language: Dart
+
+Platforms: Web, Android, iOS
