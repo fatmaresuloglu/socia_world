@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// PostModel: Veri yapısını tanımlıyoruz
+// 1. VERİ MODELİ
 class PostModel {
   final String userName;
   final String userImage;
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// 2. ANA SAYFA
 class MyHomePage extends StatelessWidget {
-  // Gönderi listemiz (Buraya yeni ekleme yapman yeterli)
   final List<PostModel> posts = [
     PostModel(
       userName: "Selçuk",
@@ -78,11 +78,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
+      // İSTEDİĞİN APPBAR BURADA
       appBar: AppBar(
         backgroundColor: Colors.grey[100],
         elevation: 0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => print("Menü tıklandı"),
           icon: Icon(Icons.menu, color: Colors.grey[600]),
         ),
         title: Text(
@@ -96,30 +97,24 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => print("Bildirimler tıklandı"),
             icon: const Icon(Icons.notifications, color: Colors.purple),
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          // 1. Bölüm: Hikayeler
-          buildStoriesSection(),
-
+          buildStoriesSection(context),
           const SizedBox(height: 10),
-
-          // 2. Bölüm: Dinamik Post Listesi
-          // Spread operator (...) kullanarak listeyi ana ListView içine yayıyoruz
           ...posts.map((postItem) => BuildPostCard(post: postItem)).toList(),
         ],
       ),
     );
   }
 
-  // Yatay Hikaye Listesi
-  Widget buildStoriesSection() {
+  Widget buildStoriesSection(BuildContext context) {
     return Container(
-      height: 120,
+      height: 125,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -131,74 +126,144 @@ class MyHomePage extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           const SizedBox(width: 10),
-          buildStoryItem('Selçuk', 'https://picsum.photos/200'),
-          buildStoryItem('Fatma', 'https://picsum.photos/201'),
-          buildStoryItem('Ali', 'https://picsum.photos/202'),
-          buildStoryItem('Zeynep', 'https://picsum.photos/203'),
-          buildStoryItem('Hakan', 'https://picsum.photos/204'),
+          buildStoryItem(context, 'Selçuk', 'https://picsum.photos/id/1/200'),
+          buildStoryItem(context, 'Fatma', 'https://picsum.photos/id/102/200'),
+          buildStoryItem(context, 'Ali', 'https://picsum.photos/id/103/200'),
+          buildStoryItem(context, 'Zeynep', 'https://picsum.photos/id/104/200'),
+          buildStoryItem(context, 'Hakan', 'https://picsum.photos/id/91/200'),
         ],
       ),
     );
   }
 
-  // Hikaye Balonu Widget'ı
-  Widget buildStoryItem(String name, String imageUrl) {
+  Widget buildStoryItem(BuildContext context, String name, String imageUrl) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.all(4.0),
-                width: 75,
-                height: 75,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.orange],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Padding(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(name: name, imageUrl: imageUrl),
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
                   padding: const EdgeInsets.all(3.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.orange],
                     ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.white,
                     child: CircleAvatar(
                       radius: 32,
                       backgroundImage: NetworkImage(imageUrl),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 2,
-                right: 2,
-                child: Container(
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 3),
+                Positioned(
+                  bottom: 5,
+                  right: 5,
+                  child: Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          Text(name, style: const TextStyle(fontSize: 12)),
-        ],
+              ],
+            ),
+            const SizedBox(height: 5),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// BuildPostCard Widget'ı (Dinamik ve Tıklanabilir)
+// 3. PROFİL SAYFASI
+class ProfilePage extends StatelessWidget {
+  final String name;
+  final String imageUrl;
+
+  const ProfilePage({super.key, required this.name, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          CircleAvatar(radius: 60, backgroundImage: NetworkImage(imageUrl)),
+          const SizedBox(height: 15),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          const Text(
+            "SociaWorld Kullanıcısı",
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildProfileStat("Takipçi", "1.2k"),
+              _buildProfileStat("Takip", "350"),
+              _buildProfileStat("Gönderi", "8"),
+            ],
+          ),
+          const Divider(height: 40, thickness: 1),
+          const Expanded(
+            child: Center(
+              child: Text(
+                "Bu kullanıcının henüz galerisi yok.",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileStat(String label, String count) {
+    return Column(
+      children: [
+        Text(
+          count,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Text(label, style: const TextStyle(color: Colors.grey)),
+      ],
+    );
+  }
+}
+
+// 4. POST KARTI
 class BuildPostCard extends StatelessWidget {
   final PostModel post;
   const BuildPostCard({super.key, required this.post});
@@ -212,98 +277,67 @@ class BuildPostCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            blurRadius: 5,
-            spreadRadius: 1,
-            offset: const Offset(0, 4),
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Material(
-          color: Colors.transparent,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(post.userImage),
-                ),
-                title: Text(
-                  post.userName,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(post.timeAgo),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_vert),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(post.userImage),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: Text(post.description),
+              title: Text(
+                post.userName,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Image.network(
-                post.postImage,
-                width: double.infinity,
-                height: 220,
-                fit: BoxFit.cover,
+              subtitle: Text(post.timeAgo),
+              trailing: const Icon(Icons.more_vert),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildActionButton(
-                      Icons.favorite_border,
-                      post.likeCount,
-                      Colors.grey,
-                      () => print("Beğen"),
-                    ),
-                    _buildActionButton(
-                      Icons.comment_outlined,
-                      post.commentCount,
-                      Colors.grey,
-                      () => print("Yorum"),
-                    ),
-                    _buildActionButton(
-                      Icons.share_outlined,
-                      '',
-                      Colors.grey,
-                      () => print("Paylaş"),
-                    ),
-                  ],
-                ),
+              child: Text(post.description),
+            ),
+            Image.network(
+              post.postImage,
+              width: double.infinity,
+              height: 220,
+              fit: BoxFit.cover,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildActionButton(Icons.favorite_border, post.likeCount),
+                  _buildActionButton(Icons.comment_outlined, post.commentCount),
+                  _buildActionButton(Icons.share_outlined, ""),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildActionButton(
-    IconData icon,
-    String label,
-    Color color,
-    VoidCallback onTap,
-  ) {
+  Widget _buildActionButton(IconData icon, String label) {
     return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Row(
           children: [
-            Icon(icon, color: color, size: 24),
-            if (label.isNotEmpty) ...[
-              const SizedBox(width: 6),
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
-            ],
+            Icon(icon, color: Colors.grey[700], size: 24),
+            if (label.isNotEmpty) ...[const SizedBox(width: 5), Text(label)],
           ],
         ),
       ),
