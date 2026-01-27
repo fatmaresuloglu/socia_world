@@ -59,10 +59,7 @@ class ProfilePage extends StatelessWidget {
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          const Text(
-            "SociaWorld Kullanıcısı",
-            style: TextStyle(color: Colors.grey),
-          ),
+          const Text("Yazılım Mühendisi", style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 25),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
