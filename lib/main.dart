@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'profilePage.dart';
 
 // 1. VERİ MODELİ
 class PostModel {
@@ -115,6 +116,7 @@ class MyHomePage extends StatelessWidget {
   Widget buildStoriesSection(BuildContext context) {
     return Container(
       height: 125,
+      padding: const EdgeInsets.symmetric(vertical: 10),
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -192,73 +194,6 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-// 3. PROFİL SAYFASI
-class ProfilePage extends StatelessWidget {
-  final String name;
-  final String imageUrl;
-
-  const ProfilePage({super.key, required this.name, required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          CircleAvatar(radius: 60, backgroundImage: NetworkImage(imageUrl)),
-          const SizedBox(height: 15),
-          Text(
-            name,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          const Text(
-            "SociaWorld Kullanıcısı",
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 25),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildProfileStat("Takipçi", "1.2k"),
-              _buildProfileStat("Takip", "350"),
-              _buildProfileStat("Gönderi", "8"),
-            ],
-          ),
-          const Divider(height: 40, thickness: 1),
-          const Expanded(
-            child: Center(
-              child: Text(
-                "Bu kullanıcının henüz galerisi yok.",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileStat(String label, String count) {
-    return Column(
-      children: [
-        Text(
-          count,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Text(label, style: const TextStyle(color: Colors.grey)),
-      ],
     );
   }
 }
