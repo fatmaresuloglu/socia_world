@@ -98,7 +98,20 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => print("Bildirimler tıklandı"),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Column(
+                    children: <Widget>[
+                      notification("kamil gönderiyi beğendi", "3 dk önce"),
+                      notification("Ayşe yorum yaptı", "36 dk önce"),
+                      notification("Ali seni takip etti", "1 saat önce"),
+                    ],
+                  );
+                },
+              );
+            },
             icon: const Icon(Icons.notifications, color: Colors.purple),
           ),
         ],
@@ -108,6 +121,24 @@ class MyHomePage extends StatelessWidget {
           buildStoriesSection(context),
           const SizedBox(height: 10),
           ...posts.map((postItem) => BuildPostCard(post: postItem)).toList(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+        backgroundColor: Colors.purple[300],
+        child: Icon(Icons.add_a_photo, color: Colors.white),
+      ),
+    );
+  }
+
+  Padding notification(String message, String timeAgo) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(message, style: TextStyle(fontSize: 15)),
+          Text(timeAgo),
         ],
       ),
     );
@@ -146,7 +177,11 @@ class MyHomePage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProfilePage(name: name, imageUrl: imageUrl),
+              builder: (context) => ProfilePage(
+                name: name,
+                imageUrl: imageUrl,
+                coverImageUrl: imageUrl,
+              ),
             ),
           );
         },

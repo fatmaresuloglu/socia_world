@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 class ProfilePage extends StatelessWidget {
   final String name;
   final String imageUrl;
-  // Kapak fotoğrafı için örnek bir URL, istersen bunu parametre olarak da alabilirsin.
-  final String coverImageUrl =
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800";
+  final String coverImageUrl; // Dışarıdan gelecek kapak resmi
 
-  const ProfilePage({super.key, required this.name, required this.imageUrl});
+  // TEK BİR CONSTRUCTOR OLMALI
+  const ProfilePage({
+    super.key,
+    required this.name,
+    required this.imageUrl,
+    required this.coverImageUrl, // Bunu zorunlu yaptık
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // AppBar'ı resmin üzerine bindirmek için extendBodyBehindAppBar kullanıyoruz.
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -29,28 +32,27 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            // Kapak Fotoğrafı ve Profil Fotoğrafı Stack Yapısı
             Stack(
               alignment: Alignment.center,
-              clipBehavior: Clip.none, // Profil fotosunun taşmasına izin verir
+              clipBehavior: Clip.none,
               children: [
-                // Kapak Fotoğrafı
+                // KAPAK FOTOĞRAFI
                 Container(
                   height: 220,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
+                      // ARTIK BURASI DİNAMİK
                       image: NetworkImage(coverImageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                // Profil Fotoğrafı (Kapağın altına taşacak şekilde konumlandırıldı)
                 Positioned(
                   bottom: -50,
                   child: CircleAvatar(
                     radius: 65,
-                    backgroundColor: Colors.white, // Dış beyaz halka
+                    backgroundColor: Colors.white,
                     child: CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(imageUrl),
@@ -59,38 +61,11 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 60,
-            ), // Profil fotosunun yarısı dışarıda olduğu için boşluk
-            // Kullanıcı Bilgileri
+            const SizedBox(height: 60),
             Text(
               name,
               style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
-            const Text(
-              "Yazılım Mühendisi",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 25),
-
-            // İstatistikler
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildProfileStat("Takipçi", "1.2k"),
-                  _buildProfileStat("Takip", "350"),
-                  _buildProfileStat("Gönderi", "8"),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-
             // Aksiyon Butonları
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -154,6 +129,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // Helper widget'ını buraya eklemeyi unutma
   Widget _buildProfileStat(String label, String count) {
     return Column(
       children: [
